@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="madras_check.admin.mapper.IpAccessMapper">
+
+    <insert id="insertIpAccess">
+        INSERT INTO ip_access (ip_address, memo, start_date, end_date)
+        VALUES (INET_ATON(#{ipAddress}), #{memo}, #{startDate}, #{endDate})
+    </insert>
+    <select id="selectIpAccess" parameterType="map" resultType="madras_check.admin.entity.IpAccess">
+        SELECT id, INET_NTOA(ip_address) as ip_address, memo, start_date, end_date
+        FROM ip_access
+        WHERE 1=1
+        <if test="ip != null">
+            AND ip_address = INET_ATON(#{ip})
+        </if>
+        <if test="memo != null">
+            AND memo LIKE CONCAT('%', #{memo}, '%')
+        </if>
+        <if test="startDate != null">
+            AND start_date &gt;= #{startDate}
+        </if>
+        <if test="endDate != null">
+            AND end_date &lt;= #{endDate}
+        </if>
+        LIMIT #{recordSize} OFFSET #{offset}
+    </select>
+    <select id="selectIpAccessCount" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM ip_access
+        WHERE 1=1
+        <if test="ip != null">
+            AND ip_address = INET_ATON(#{ip})
+        </if>
+        <if test="memo != null">
+            AND memo LIKE CONCAT('%', #{memo}, '%')
+        </if>
+        <if test="startDate != null">
+            AND start_date &gt;= #{startDate}
+        </if>
+        <if test="endDate != null">
+            AND end_date &lt;= #{endDate}
+        </if>
+    </select>
+    <delete id="deleteIpAccess">
+        DELETE
+        FROM ip_access
+        WHERE id = #{id}
+    </delete>
+</mapper>
