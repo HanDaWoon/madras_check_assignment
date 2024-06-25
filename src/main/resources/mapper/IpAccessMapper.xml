@@ -23,8 +23,8 @@
         <if test="endDate != null">
             AND end_date &lt;= #{endDate}
         </if>
-        LIMIT #{recordSize} OFFSET #{offset}
         ORDER BY id DESC
+        LIMIT #{recordSize} OFFSET #{offset}
     </select>
     <select id="selectIpAccessCount" resultType="java.lang.Integer">
         SELECT COUNT(*)
