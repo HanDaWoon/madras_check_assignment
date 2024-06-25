@@ -25,7 +25,7 @@ public class ProjectSecurityConfig {
     protected CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfig = new CorsConfiguration();
 
-        corsConfig.addAllowedOriginPattern("*");
+        corsConfig.addAllowedOrigin("https://assignment.mc.dawoony.com");
         corsConfig.addAllowedMethod("*");
         corsConfig.addAllowedHeader("*");
         corsConfig.setAllowCredentials(true);
