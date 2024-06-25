@@ -30,6 +30,7 @@ public class IpAccessController {
 
     /**
      * Add IP Access
+     *
      * @param addIpAccessReq IP Access Request
      * @return ResponseEntity
      */
@@ -39,6 +40,9 @@ public class IpAccessController {
             // Validation
             if (addIpAccessReq.getIpAddress() == null || addIpAccessReq.getIpAddress().isBlank()) {
                 return new ResponseBad(IpAccessMessage.IP_REQUIRED).toResponseEntity();
+            }
+            if (!addIpAccessReq.getIpAddress().matches("^(\\d{1,3}\\.){3}\\d{1,3}$")) {
+                return new ResponseBad(IpAccessMessage.INVALID_IP).toResponseEntity();
             }
             if (addIpAccessReq.getMemo() == null || addIpAccessReq.getMemo().isBlank()) {
                 return new ResponseBad(IpAccessMessage.MEMO_REQUIRED).toResponseEntity();
@@ -67,11 +71,12 @@ public class IpAccessController {
 
     /**
      * Get IP Access
+     *
      * @param paginationParam Pagination Param
-     * @param ip IP Address
-     * @param memo Memo
-     * @param startDate Start Date
-     * @param endDate End Date
+     * @param ip              IP Address
+     * @param memo            Memo
+     * @param startDate       Start Date
+     * @param endDate         End Date
      * @return ResponseEntity
      */
     @GetMapping("")
@@ -79,8 +84,8 @@ public class IpAccessController {
         PaginationParam paginationParam,
         @RequestParam(required = false) String ip,
         @RequestParam(required = false) String memo,
-        @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date startDate,
-        @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date endDate
+        @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Date startDate,
+        @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Date endDate
     ) {
         // 페이지네이션 처리
         Pagination pagination = new Pagination(ipAccessService.getIpAccessCount(ip, memo, startDate, endDate), paginationParam);
@@ -94,6 +99,7 @@ public class IpAccessController {
 
     /**
      * Delete IP Access
+     *
      * @param id IP Access ID
      * @return ResponseEntity
      */
