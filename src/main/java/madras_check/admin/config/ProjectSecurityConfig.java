@@ -15,11 +15,11 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
 public class ProjectSecurityConfig {
-    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+//    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 
-    public ProjectSecurityConfig(CustomAuthenticationEntryPoint customAuthenticationEntryPoint) {
-        this.customAuthenticationEntryPoint = customAuthenticationEntryPoint;
-    }
+//    public ProjectSecurityConfig(CustomAuthenticationEntryPoint customAuthenticationEntryPoint) {
+//        this.customAuthenticationEntryPoint = customAuthenticationEntryPoint;
+//    }
 
     @Bean
     protected CorsConfigurationSource corsConfigurationSource() {
@@ -48,7 +48,8 @@ public class ProjectSecurityConfig {
                 .requestMatchers("/**").hasRole("ADMIN")
             )
             .formLogin(Customizer.withDefaults())
-            .httpBasic(httpBasic -> httpBasic.authenticationEntryPoint(customAuthenticationEntryPoint));
+            .httpBasic(Customizer.withDefaults());
+//            .httpBasic(httpBasic -> httpBasic.authenticationEntryPoint(customAuthenticationEntryPoint));
 
         return http.build();
     }
